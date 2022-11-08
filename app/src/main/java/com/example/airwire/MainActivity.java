@@ -59,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
         selectBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-//                Intent intent = new Intent();
-//                intent.setAction(Intent.ACTION_GET_CONTENT);
-//                intent.setType("image/*");
-//                startActivityForResult(intent, 10);
-                imageToBitMap();
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, 10);
+//                imageToBitMap(); // for testing purpose
 
             }
         });
@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
 //                    AirwireV2 model = AirwireV2.newInstance(MainActivity.this);
 //                    V1AirwireV2 model = V1AirwireV2.newInstance(MainActivity.this);
                     V2AirwireV2 model = V2AirwireV2.newInstance(MainActivity.this);
+//                    Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test_img);
+//                    bitmap = Bitmap.createScaledBitmap(bitmap,240,400, true);
+//                    imageView.setImageBitmap(bitmap);
                     // Creates inputs for reference.
                     TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 120, 200, 3}, DataType.FLOAT32);
                     // resizing bitmap image as per requirement
@@ -96,12 +99,9 @@ public class MainActivity extends AppCompatActivity {
 //                    bitmap = Bitmap.createScaledBitmap(resizedBmp,240,400, true); // why 240 and 400: https://stackoverflow.com/questions/67720779/the-size-of-byte-buffer-and-the-shape-do-not-match-previously-not-answered
                     bitmap = Bitmap.createScaledBitmap(bitmap,240,400, true); // why 240 and 400: https://stackoverflow.com/questions/67720779/the-size-of-byte-buffer-and-the-shape-do-not-match-previously-not-answered
 
-//                    Log.d("shape", bitmap.toString());
-                    int w = bitmap.getWidth();
-                    int h = bitmap.getHeight();
-//                    Log.d("shape", String.valueOf(w));
-//                    Log.d("shape", String.valueOf(h));
-//                    Log.d("shape", byteBuffer.toString())
+
+
+
                     Log.d("inp_shape", inputFeature0.getBuffer().toString());
                     inputFeature0.loadBuffer(TensorImage.fromBitmap(bitmap).getBuffer());
 //                    Log.d("inp_shape", inputFeature0.getBuffer().toString());
@@ -111,10 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     V2AirwireV2.Outputs outputs = model.process(inputFeature0);
 
                     TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-//                    Log.d("MyApp", String.valueOf(outputFeature0));
-//                    Log.d("MyApp", String.valueOf(outputFeature0.getFloatArray()));
-                    //                    System.out.println(outputFeature0);
-//                    System.out.println(outputFeature0.getFloatArray());
+
 //                    Log.d("output-type", outputFeature0.getDataType().toString()); //float32
 //                    float[] data=outputFeature0.getFloatArray();
                     int[] data=outputFeature0.getIntArray();
@@ -122,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.d("output-type", String.valueOf(outputFeature0.getFloatValue(0)));
                     Log.d("output-type", String.valueOf(outputFeature0.getIntValue(0)));
 
-//                    Log.d("output", outputFeature0.getFloatArray().toString());
 //                    result.setText(String.valueOf(outputFeature0.getFloatValue(0))+"");
                     result.setText(String.valueOf(outputFeature0.getIntValue(0))+"");
 //                    result.setText(getMax(outputFeature0.getFloatArray())+"");
@@ -137,16 +133,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void imageToBitMap() {
-//        String fileName = "C:\\Users\\joyan\\AndroidStudioProjects\\AirWire\\app\\src\\main\\res\\drawable-v24\\test_img.JPG";
-//        String fileName = "res/drawable-v24/test_img.JPG";
-        final File file = new File("C:\\Users\\joyan\\AndroidStudioProjects\\AirWire\\app\\src\\main\\res\\drawable-v24\\test_img.JPG");
-//        img.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()),240,400,true));
-//        File mSaveBit  = new File(fileName);
-//        File mSaveBit = ; // Your image file
-//        String filePath = mSaveBit.getPath();
-//        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-        Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(file),240,400,true);
-
+        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test_img);
+        bitmap = Bitmap.createScaledBitmap(bitmap,240,400, true);
         imageView.setImageBitmap(bitmap);
     }
 
